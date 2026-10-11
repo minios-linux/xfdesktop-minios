@@ -33,6 +33,8 @@ G_BEGIN_DECLS
 void menu_init(XfconfChannel *channel);
 GtkMenu *menu_populate(GtkMenu *menu, gint scale_factor);
 void menu_cleanup(XfconfChannel *channel);
+void menu_launch_settings(GtkWidget *parent, const gchar *command);
+void menu_append_display_settings(GtkMenu *menu, GtkWidget *parent);
 
 G_END_DECLS
 

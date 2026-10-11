@@ -1,0 +1,58 @@
+Source: xfdesktop4
+Section: xfce
+Priority: optional
+Maintainer: crims0n <crims0n@minios.dev>
+Build-Depends: debhelper-compat (= 13),
+               gettext,
+               libcairo2-dev,
+               libexo-2-dev,
+               libgarcon-1-dev,
+               libgarcon-gtk3-1-dev,
+               libglib2.0-dev,
+               libgtk-3-dev,
+               libgtk-layer-shell-dev,
+               libnotify-dev,
+               libthunarx-3-dev (>= 4.17.10~),
+               libxfce4ui-2-dev,
+               libxfce4util-dev,
+               libxfce4windowing-0-dev (>= 4.19.8),
+                libxfconf-0-dev (>= 4.19.3),
+                libyaml-dev,
+                xfce4-dev-tools (>= 4.19),
+                xauth,
+                xvfb
+Rules-Requires-Root: no
+Standards-Version: 4.7.1
+Homepage: https://docs.xfce.org/xfce/xfdesktop/start
+Vcs-Git: https://github.com/minios-linux/xfdesktop-minios.git
+Vcs-Browser: https://github.com/minios-linux/xfdesktop-minios
+
+Package: xfdesktop4-data
+Architecture: all
+Depends: ${misc:Depends}
+Multi-Arch: foreign
+Description: Xfce desktop background, icons and root menu (common files)
+ xfdesktop4 sets the background image, provides a right-click menu to
+ launch applications and can optionally show files (including application
+ launchers) or iconified windows. It includes gradient support for
+ background color, saturation support for background image, real multiscreen
+ and xinerama support.
+ .
+ This package contains architecture-independent files for xfdesktop4.
+
+Package: xfdesktop4
+Architecture: any
+Depends: exo-utils,
+         xfdesktop4-data (= ${source:Version}),
+         ${misc:Depends},
+         ${shlibs:Depends}
+Recommends: default-dbus-session-bus | dbus-session-bus,
+            librsvg2-common,
+            tumbler,
+            xdg-user-dirs
+Description: Xfce desktop background, icons and root menu manager
+ xfdesktop4 sets the background image, provides a right-click menu to
+ launch applications and can optionally show files (including application
+ launchers) or iconified windows. It includes gradient support for
+ background color, saturation support for background image, real multiscreen
+ and xinerama support.

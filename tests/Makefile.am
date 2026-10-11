@@ -1,8 +1,18 @@
 if ENABLE_TESTS
 
+noinst_PROGRAMS = test-display-settings-menu
+test_display_settings_menu_SOURCES = test-display-settings-menu.c ../src/menu.c
+test_display_settings_menu_CFLAGS = -I$(top_srcdir)/src -I$(top_srcdir)/common \
+	$(GTK_CFLAGS) $(LIBXFCE4UI_CFLAGS) $(LIBXFCE4UTIL_CFLAGS) $(XFCONF_CFLAGS) \
+	$(GARCON_CFLAGS) $(GARCON_GTK3_CFLAGS)
+test_display_settings_menu_LDADD = $(top_builddir)/common/libxfdesktop.la \
+	$(GTK_LIBS) $(LIBXFCE4UI_LIBS) $(LIBXFCE4UTIL_LIBS) $(XFCONF_LIBS) \
+	$(LIBXFCE4WINDOWING_LIBS) $(GARCON_LIBS) $(GARCON_GTK3_LIBS)
+test_display_settings_menu_LDFLAGS = -Wl,--wrap=xfce_spawn_command_line -Wl,--wrap=xfce_message_dialog
+
 if ENABLE_FILE_ICONS
 
-noinst_PROGRAMS = \
+noinst_PROGRAMS += \
 	test-icon-position-parsing \
 	test-icon-position-saving
 
@@ -34,6 +44,7 @@ endif
 endif
 
 EXTRA_DIST = \
+	test-display-settings-menu.c \
 	meson.build \
 	test-icon-position-parsing.c \
 	test-icon-position-saving.c

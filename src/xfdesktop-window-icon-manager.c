@@ -31,6 +31,7 @@
 #include "common/xfdesktop-common.h"
 #include "common/xfdesktop-keyboard-shortcuts.h"
 #include "xfce-desktop.h"
+#include "menu.h"
 #include "xfdesktop-backdrop-manager.h"
 #include "xfdesktop-icon-view-holder.h"
 #include "xfdesktop-icon-view-manager.h"
@@ -339,6 +340,7 @@ build_root_context_menu(MonitorData *mdata) {
         g_object_set_data_full(G_OBJECT(mi), "--xfdesktop-menu-callback-data", xfdesktop_settings_path, g_free);
     }
 
+    menu_append_display_settings(GTK_MENU(menu), GTK_WIDGET(xfdesktop_icon_view_holder_get_desktop(mdata->holder)));
     return GTK_MENU(menu);
 }
 

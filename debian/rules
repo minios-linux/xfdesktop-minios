@@ -1,0 +1,32 @@
+#!/usr/bin/make -f
+
+export DEB_LDFLAGS_MAINT_APPEND=-Wl,-z,defs -Wl,-O1
+export DEB_BUILD_MAINT_OPTIONS=hardening=+all
+
+%:
+	dh $@ --buildsystem=autoconf
+
+override_dh_autoreconf:
+	NOCONFIGURE=1 dh_autoreconf /bin/sh ./autogen.sh
+
+override_dh_auto_configure:
+	dh_auto_configure -- --enable-thunarx --enable-tests \
+		--docdir=\$${prefix}/share/doc/xfdesktop4-data
+
+override_dh_auto_test:
+	dh_auto_test
+	set -e; tmp=$$(mktemp); trap 'rm -f "$$tmp"' EXIT; \
+		xvfb-run -a sh -ec './tests/test-display-settings-menu; ./tests/test-icon-position-saving "$$1"; ./tests/test-icon-position-parsing "$$1"' sh "$$tmp"
+
+override_dh_install:
+	dh_install
+	# why oh why is this necessary?
+	rm -rf $(CURDIR)/debian/xfdesktop4-data/usr/share/man
+
+override_dh_installchangelogs:
+	DEB_BUILD_OPTIONS=notrimdch dh_installchangelogs NEWS
+
+override_dh_link-arch:
+	rm -rf $(CURDIR)/debian/xfdesktop4/usr/share/doc/xfdesktop4
+	ln -s xfdesktop4-data $(CURDIR)/debian/xfdesktop4/usr/share/doc/xfdesktop4
+	dh_link

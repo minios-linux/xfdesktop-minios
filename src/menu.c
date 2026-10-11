@@ -50,6 +50,46 @@ static gboolean show_desktop_menu_icons = TRUE;
 static GarconMenu *garcon_menu = NULL;
 #endif
 
+void
+menu_launch_settings(GtkWidget *parent, const gchar *command) {
+    gchar *quoted_command = g_shell_quote(command);
+    GError *error = NULL;
+    if (!xfce_spawn_command_line(gtk_widget_get_screen(parent), quoted_command, FALSE, TRUE, TRUE, &error)) {
+        gchar *primary = g_strdup_printf(_("Unable to launch \"%s\":"), command);
+        xfce_message_dialog(GTK_WINDOW(parent), _("Launch Error"),
+                            "dialog-error", primary, error->message,
+                            XFCE_BUTTON_TYPE_MIXED, "window-close", _("_Close"), GTK_RESPONSE_ACCEPT,
+                            NULL);
+        g_free(primary);
+        g_clear_error(&error);
+    }
+    g_free(quoted_command);
+}
+
+static void
+display_settings_activate(GtkWidget *item, GtkWidget *parent) {
+    gchar *command = g_find_program_in_path("xfce4-display-settings");
+    /* If it disappeared while the menu was open, let the native launcher
+     * report the missing executable through the same error dialog. */
+    menu_launch_settings(parent, command != NULL ? command : "xfce4-display-settings");
+    g_free(command);
+}
+
+void
+menu_append_display_settings(GtkMenu *menu, GtkWidget *parent) {
+    gchar *command = g_find_program_in_path("xfce4-display-settings");
+    if (command == NULL) {
+        return;
+    }
+    g_free(command);
+
+    GtkWidget *image = gtk_image_new_from_icon_name("video-display", GTK_ICON_SIZE_MENU);
+    GtkWidget *item = xfdesktop_menu_create_menu_item_with_mnemonic(_("_Display Settings..."), image);
+    gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
+    gtk_widget_show(item);
+    g_signal_connect_object(item, "activate", G_CALLBACK(display_settings_activate), parent, 0);
+}
+
 GtkMenu *
 menu_populate(GtkMenu *menu, gint scale_factor)
 {

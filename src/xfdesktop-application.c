@@ -1334,6 +1334,17 @@ do_menu_popup(XfdesktopApplication *app,
     }
 #endif
 
+    if (populate_from_icon_view && menu == NULL) {
+        menu = GTK_MENU(gtk_menu_new());
+        menu_append_display_settings(menu, GTK_WIDGET(desktop));
+        GList *children = gtk_container_get_children(GTK_CONTAINER(menu));
+        if (children == NULL) {
+            gtk_widget_destroy(GTK_WIDGET(menu));
+            menu = NULL;
+        }
+        g_list_free(children);
+    }
+
     menu = (*populate_func)(menu, gtk_widget_get_scale_factor(GTK_WIDGET(desktop)));
 
     if (menu != NULL) {

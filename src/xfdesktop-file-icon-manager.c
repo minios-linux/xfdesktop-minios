@@ -64,6 +64,7 @@
 #include "xfdesktop-backdrop-manager.h"
 #include "xfdesktop-clipboard-manager.h"
 #include "xfdesktop-common.h"
+#include "menu.h"
 #include "xfdesktop-file-icon.h"
 #include "xfdesktop-file-icon-manager.h"
 #include "xfdesktop-file-icon-model.h"
@@ -1342,19 +1343,7 @@ xfdesktop_settings_launch(GtkWidget *w, MonitorData *mdata) {
     if(!cmd)
         cmd = g_strdup(BINDIR "/xfdesktop-settings");
 
-    GError *error = NULL;
-    if (!xfce_spawn_command_line(mdata->fmanager->gscreen, cmd, FALSE, TRUE, TRUE, &error)) {
-        /* printf is to be translator-friendly */
-        gchar *primary = g_strdup_printf(_("Unable to launch \"%s\":"), cmd);
-        xfce_message_dialog(toplevel_window_for_monitor_data(mdata),
-                            _("Launch Error"),
-                            "dialog-error", primary, error->message,
-                            XFCE_BUTTON_TYPE_MIXED, "window-close", _("_Close"), GTK_RESPONSE_ACCEPT,
-                            NULL);
-        g_free(primary);
-        g_clear_error(&error);
-    }
-
+    menu_launch_settings(GTK_WIDGET(toplevel_window_for_monitor_data(mdata)), cmd);
     g_free(cmd);
 }
 
@@ -2129,6 +2118,8 @@ xfdesktop_file_icon_manager_get_context_menu(XfdesktopIconViewManager *manager,
                           g_themed_icon_new("preferences-desktop-wallpaper"),
                           G_CALLBACK(xfdesktop_settings_launch),
                           mdata);
+
+            menu_append_display_settings(GTK_MENU(menu), GTK_WIDGET(toplevel_window_for_monitor_data(mdata)));
         } else {
             /* Properties - applies only to icons on the desktop */
             GtkWidget *properties_mi = add_menu_item(menu,
