@@ -1,3 +1,12 @@
+xfdesktop4 (4.20.1-1minios2) unstable; urgency=medium
+
+  * Rebuild gettext catalogs from current PO files instead of reusing the
+    precompiled upstream catalogs which omitted the Display Settings action.
+  * Verify the complete installed catalogs for all eight MiniOS languages and
+    add a native GTK menu translation probe.
+
+ -- crims0n <crims0n@minios.dev>  Sun, 11 Oct 2026 23:53:24 +0300
+
 xfdesktop4 (4.20.1-1minios1) unstable; urgency=medium
 
   * Add a Display Settings action to the desktop background context menu in

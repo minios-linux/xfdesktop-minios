@@ -13,6 +13,14 @@ override_dh_auto_configure:
 	dh_auto_configure -- --enable-thunarx --enable-tests \
 		--docdir=\$${prefix}/share/doc/xfdesktop4-data
 
+execute_before_dh_auto_build:
+	# Upstream tarballs contain precompiled catalogs. Source PO patches must not
+	# be bypassed by their timestamps: rebuild every catalog from the current PO.
+	rm -f po/*.gmo
+
+execute_after_dh_auto_install:
+	python3 debian/tests/check-translations.py debian/tmp/usr/share/locale
+
 override_dh_auto_test:
 	dh_auto_test
 	set -e; tmp=$$(mktemp); trap 'rm -f "$$tmp"' EXIT; \

@@ -2,7 +2,7 @@
 
 This fork retains Xfdesktop 4.20.1 and the Debian Trixie packaging for
 `xfdesktop4` and `xfdesktop4-data`. The MiniOS package revision is
-`4.20.1-1minios1`; the upstream program version remains `4.20.1`.
+`4.20.1-1minios2`; the upstream program version remains `4.20.1`.
 
 Upstream: https://github.com/xfce-mirror/xfdesktop
 
@@ -32,6 +32,10 @@ Translations use the existing `xfdesktop` gettext domain and are maintained
 with the parent `minios-live` workspace's `lokit.yaml`, `lokit-terms.yaml` and
 `lokit.lock`. Run `lokit status --target xfdesktop-minios` from that workspace
 root; the PO catalogs remain in this repository.
+
+The package rebuilds all GMO catalogs from the PO inputs and checks the shipped
+translations for de, es, fr, id, it, pt, pt_BR and ru. This avoids reusing the
+upstream precompiled catalogs, which do not contain the MiniOS menu action.
 
 ## Development builds
 

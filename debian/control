@@ -3,7 +3,8 @@ Section: xfce
 Priority: optional
 Maintainer: crims0n <crims0n@minios.dev>
 Build-Depends: debhelper-compat (= 13),
-               gettext,
+                gettext,
+                python3,
                libcairo2-dev,
                libexo-2-dev,
                libgarcon-1-dev,
